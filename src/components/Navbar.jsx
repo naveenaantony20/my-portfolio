@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 120; // adjust based on navbar height
-
-      // detect active section
+      const scrollPosition = window.scrollY + 120;
       const sections = ["home", "about", "experience", "skills", "projects", "contact"];
       for (let id of sections) {
         const section = document.getElementById(id);
-        if (section && section.offsetTop <= scrollPosition && section.offsetTop + section.offsetHeight > scrollPosition) {
+        if (
+          section &&
+          section.offsetTop <= scrollPosition &&
+          section.offsetTop + section.offsetHeight > scrollPosition
+        ) {
           setActiveSection(id);
           break;
         }
       }
-
-      // navbar background change on scroll
       setIsScrolled(window.scrollY > 20);
     };
 
@@ -26,44 +28,80 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navLinks = ["Home", "About", "Experience", "Skills", "Projects", "Contact"];
+
   return (
     <nav
-      className={`fixed w-full top-0 z-50 border-b border-white/5 transition-all duration-300 ${
-        isScrolled ? "bg-[#0B1120]/80 backdrop-blur-lg shadow-md" : "bg-transparent"
+      className={`fixed w-full top-0 z-50 transition-all duration-300 border-b border-white/5 ${
+        isScrolled ? "bg-[#0B1120]/80 backdrop-blur-lg shadow-lg" : "bg-transparent"
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
-        {/* logo */}
-        <span className="font-bold text-sky-400 text-xl tracking-wider hover:text-purple-400 transition-all cursor-pointer">
+        {/* Logo */}
+        <motion.span
+          whileHover={{ rotate: 10, scale: 1.1 }}
+          className="font-extrabold text-sky-400 text-2xl tracking-wider cursor-pointer hover:text-purple-400 transition-all"
+        >
           NA
-        </span>
+        </motion.span>
 
-        {/* nav links */}
+        {/* Desktop Links */}
         <ul className="hidden sm:flex gap-8 text-gray-300 font-medium">
-          {["Home", "About", "Experience", "Skills", "Projects", "Contact"].map((item) => {
+          {navLinks.map((item) => {
             const id = item.toLowerCase();
             return (
               <li key={id}>
                 <a
                   href={`#${id}`}
-                  className={`transition-colors duration-200 ${
+                  className={`relative transition-colors duration-300 group ${
                     activeSection === id
-                      ? "text-sky-400 border-b-2 border-sky-400 pb-1"
-                      : "hover:text-sky-400"
+                      ? "text-sky-400"
+                      : "text-gray-300 hover:text-sky-400"
                   }`}
                 >
                   {item}
+                  <span
+                    className={`absolute left-0 -bottom-1 h-[2px] bg-gradient-to-r from-sky-400 to-purple-400 transition-all duration-300 ${
+                      activeSection === id ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
                 </a>
               </li>
             );
           })}
         </ul>
 
-        {/* mobile hamburger */}
-        <div className="sm:hidden text-gray-400 hover:text-sky-400 cursor-pointer">
+        {/* Mobile Menu */}
+        <div
+          className="sm:hidden text-gray-300 hover:text-sky-400 cursor-pointer text-2xl"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
           ☰
         </div>
       </div>
+
+      {/* Mobile Drawer */}
+      {menuOpen && (
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="sm:hidden bg-[#0B1120]/95 backdrop-blur-xl border-t border-white/10 px-6 py-4 space-y-3 text-gray-300"
+        >
+          {navLinks.map((item) => {
+            const id = item.toLowerCase();
+            return (
+              <a
+                key={id}
+                href={`#${id}`}
+                className="block py-1 hover:text-sky-400"
+                onClick={() => setMenuOpen(false)}
+              >
+                {item}
+              </a>
+            );
+          })}
+        </motion.div>
+      )}
     </nav>
   );
 }

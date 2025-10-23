@@ -68,7 +68,10 @@ export default function Projects() {
 
             <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
                 <h2 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent">
-                    Featured <span className="text-transparent bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text">Projects</span>
+                    Featured{" "}
+                    <span className="text-transparent bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text">
+                        Projects
+                    </span>
                 </h2>
                 <p className="text-gray-400 text-lg mb-16">
                     Real-world applications making a difference
@@ -79,13 +82,19 @@ export default function Projects() {
                     {projects.map((proj, index) => (
                         <motion.div
                             key={proj.title}
-                            className="relative bg-[#111827]/60 border border-white/10 p-6 rounded-xl text-left shadow-md hover:shadow-[0_0_25px_rgba(96,165,250,0.2)] transition-all"
+                            className={`
+                relative bg-[#111827]/60 border border-white/10 p-6 rounded-xl text-left 
+                shadow-[0_0_25px_rgba(96,165,250,0.25)] transition-all duration-500 
+                before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br 
+                before:from-${proj.accent}-500/10 before:to-${proj.accent}-400/5 
+                before:opacity-100 before:blur-2xl hover:-translate-y-2 
+                hover:shadow-[0_0_40px_rgba(96,165,250,0.45)]`}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1, duration: 0.5 }}
                             viewport={{ once: true }}
                         >
-                            <div className="flex justify-between items-center mb-3">
+                            <div className="flex justify-between items-center mb-3 relative z-10">
                                 <span
                                     className={`text-xs font-semibold px-3 py-1 rounded-full bg-${proj.accent}-500/20 text-${proj.accent}-400 border border-${proj.accent}-500/20`}
                                 >
@@ -94,23 +103,23 @@ export default function Projects() {
                                 <Code2 className={`text-${proj.accent}-400`} size={18} />
                             </div>
 
-                            <h3 className="text-xl font-semibold text-gray-100 mb-2">
+                            <h3 className="text-xl font-semibold text-gray-100 mb-2 relative z-10">
                                 {proj.title}
                             </h3>
-                            <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+                            <p className="text-gray-400 text-sm mb-4 leading-relaxed relative z-10">
                                 {proj.desc}
                             </p>
 
-                            <h4 className="text-gray-200 font-semibold text-sm mb-1">
+                            <h4 className="text-gray-200 font-semibold text-sm mb-1 relative z-10">
                                 Key Highlights:
                             </h4>
-                            <ul className="list-disc list-inside text-gray-400 text-sm mb-4 space-y-1">
+                            <ul className="list-disc list-inside text-gray-400 text-sm mb-4 space-y-1 relative z-10">
                                 {proj.highlights.map((h) => (
                                     <li key={h}>{h}</li>
                                 ))}
                             </ul>
 
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2 relative z-10">
                                 {proj.tech.map((tech) => (
                                     <span
                                         key={tech}
