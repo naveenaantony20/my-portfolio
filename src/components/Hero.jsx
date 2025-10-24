@@ -5,7 +5,9 @@ export default function Hero() {
         const sectionId = id.replace("#", "");
         const section = document.getElementById(sectionId);
         if (section) {
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
+            const yOffset = -80; // adjust for navbar height
+            const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: "smooth" });
         }
     };
 
@@ -15,8 +17,9 @@ export default function Hero() {
             className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden bg-[#050B18]"
         >
             {/* floating background glow */}
-            <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-sky-600/30 rounded-full blur-[150px] animate-pulse" />
-            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse delay-2000" />
+            <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-sky-600/30 rounded-full blur-[150px] animate-pulse pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse delay-2000 pointer-events-none" />
+
 
             {/* available tag */}
             <motion.span
@@ -89,8 +92,7 @@ export default function Hero() {
                 {/* Resume Button */}
                 <motion.a
                     href="/resume.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    download="Naveena_Antony_Resume.pdf"
                     className="border border-sky-500 text-sky-300 px-6 py-2 rounded-lg hover:bg-sky-600/20 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:scale-105 transition-transform duration-200"
                     whileTap={{ scale: 0.9 }}
                 >
